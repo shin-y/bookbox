@@ -2,7 +2,8 @@
 Sharing of book reviews and management of book lending and borrowing records.
 
 ## コンセプト
-本好き・チーム・友人グループ内での書評の共有と貸し借りの記録を管理するためのサービス。　　
+本好き・チーム・友人グループ内での書評の共有と貸し借りの記録を管理するためのサービス。
+
 LINEや既存のSNSでは流れてしまうような、「この本よかったよ」「貸してあげるよ」を記録・整理できる。
 
 ## 想定ユーザーシナリオ
