@@ -1,5 +1,5 @@
 # BookBox
-Sharing of book reviews and management of book lending and borrowing records.
+Share book reviews and manage book loans.
 
 ## コンセプト
 - 本好き・チーム・友人グループ内での書評の共有と貸し借りの記録を管理するためのサービス。
