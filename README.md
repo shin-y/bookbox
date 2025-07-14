@@ -26,7 +26,7 @@ Share book reviews and manage book loans.
 ||TypeScript|型安全、GraphQLとの親和性が高い|
 ||TailwindCss|モダンなUIを効率よく構築|
 ||Appolo Client|GraphQLクライアントとして定番、キャッシュ制御も充実|
-|バックエンド|Go(gglgen)|高速、型安全、GraphQLスキーマ駆動開発が可能|
+|バックエンド|Go(gqlgen)|高速、型安全、GraphQLスキーマ駆動開発が可能|
 ||PostgreSQL|リレーショナルで複雑なクエリに対応しやすい|
 |外部API|Google Books API|書籍情報取得、書影や著者名取得に便利|
 |認証|Auth0/Firebase Auth/Clerk|検討中|
