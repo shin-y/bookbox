@@ -1,9 +1,67 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  biography: String
+  iconUrl: String 
+  books: [UserBook!]!
+}
+
 type Book {
   id: ID!
   title: String!
   author: String!
+  description: String
+  isbn: String
+  publishedAt: String
+  coverImageUrl: String
+  reviews: [Review!]!
+}
+
+type UserBook {
+  id: ID!
+  user: User!
+  book: Book!
+  status: ReadStatus!
+  addedAt: String!
+  isLendable: Boolean!
+}
+
+enum ReadStatus {
+  TO_READ
+  READING
+  READ
+}
+
+type Review {
+  id: ID!
+  user: User!
+  book: Book!
+  rating: Int
+  comment: String
+  createdAt: String!
+  reactions: [ReviewReaction!]!
+  reactionCount: Int!
+}
+
+type ReviewReaction {
+  id: ID!
+  review: Review!
+  user: User! 
+  createdAt: String!
 }
 
 type Query {
   books: [Book!]!
+  book(id: ID!): Book
+  users: [User!]!
+  me: User
+}
+
+type Mutation {
+  addBook(title: String!, author: String!, description: String): Book!
+  addUserBook(bookId: ID!, status: ReadStatus!): UserBook!
+  addReview(bookId: ID!, rating: Int!, comment: String): Review!
+  likeReview(reviewId: ID!): Boolean!
+  unlikeReview(reviewId: ID!): Boolean!
 }
