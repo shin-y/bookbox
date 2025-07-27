@@ -1,0 +1,31 @@
+type Book {
+  id: ID!
+  title: String!
+  author: String!
+  publisher: String
+  description: String
+  isbn: String
+  publishedAt: String
+  coverImageUrl: String
+  reviews: [Review!]!
+}
+
+input BookCreateInput {
+  title: String!
+  author: String!
+  publisher: String
+  description: String
+  isbn: String
+  publishedAt: String
+  coverImageUrl: String
+}
+
+input BookUpdateInput {
+  title: String
+  author: String
+  publisher: String
+  description: String
+  isbn: String
+  publishedAt: String
+  coverImageUrl: String
+}

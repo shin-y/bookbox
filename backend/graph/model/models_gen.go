@@ -2,11 +2,140 @@
 
 package model
 
-type Book struct {
-	ID     string `json:"id"`
-	Title  string `json:"title"`
-	Author string `json:"author"`
+import (
+	"bytes"
+	"fmt"
+	"io"
+	"strconv"
+)
+
+type BookCreateInput struct {
+	Title         string  `json:"title"`
+	Author        string  `json:"author"`
+	Publisher     *string `json:"publisher,omitempty"`
+	Description   *string `json:"description,omitempty"`
+	Isbn          *string `json:"isbn,omitempty"`
+	PublishedAt   *string `json:"publishedAt,omitempty"`
+	CoverImageURL *string `json:"coverImageUrl,omitempty"`
+}
+
+type BookUpdateInput struct {
+	Title         *string `json:"title,omitempty"`
+	Author        *string `json:"author,omitempty"`
+	Publisher     *string `json:"publisher,omitempty"`
+	Description   *string `json:"description,omitempty"`
+	Isbn          *string `json:"isbn,omitempty"`
+	PublishedAt   *string `json:"publishedAt,omitempty"`
+	CoverImageURL *string `json:"coverImageUrl,omitempty"`
+}
+
+type Mutation struct {
 }
 
 type Query struct {
+}
+
+type ReviewCreateInput struct {
+	BookID  string  `json:"bookId"`
+	Rating  *int32  `json:"rating,omitempty"`
+	Title   *string `json:"title,omitempty"`
+	Comment *string `json:"comment,omitempty"`
+	Spoiler *string `json:"spoiler,omitempty"`
+}
+
+type ReviewReactionCreateInput struct {
+	ReviewID string `json:"reviewId"`
+}
+
+type ReviewUpdateInput struct {
+	Rating  *int32  `json:"rating,omitempty"`
+	Title   *string `json:"title,omitempty"`
+	Comment *string `json:"comment,omitempty"`
+	Spoiler *string `json:"spoiler,omitempty"`
+}
+
+type UserBookCreateInput struct {
+	BookID     string     `json:"bookId"`
+	Status     ReadStatus `json:"status"`
+	StartedAt  *string    `json:"startedAt,omitempty"`
+	FinishedAt *string    `json:"finishedAt,omitempty"`
+	IsLendable bool       `json:"isLendable"`
+}
+
+type UserBookUpdateInput struct {
+	Status     *ReadStatus `json:"status,omitempty"`
+	StartedAt  *string     `json:"startedAt,omitempty"`
+	FinishedAt *string     `json:"finishedAt,omitempty"`
+	IsLendable *bool       `json:"isLendable,omitempty"`
+}
+
+type UserCreateInput struct {
+	Name      string  `json:"name"`
+	Email     string  `json:"email"`
+	Biography *string `json:"biography,omitempty"`
+	IconURL   *string `json:"iconUrl,omitempty"`
+}
+
+type UserUpdateInput struct {
+	Name      *string `json:"name,omitempty"`
+	Email     *string `json:"email,omitempty"`
+	Biography *string `json:"biography,omitempty"`
+	IconURL   *string `json:"iconUrl,omitempty"`
+}
+
+type ReadStatus string
+
+const (
+	ReadStatusToRead  ReadStatus = "TO_READ"
+	ReadStatusReading ReadStatus = "READING"
+	ReadStatusRead    ReadStatus = "READ"
+)
+
+var AllReadStatus = []ReadStatus{
+	ReadStatusToRead,
+	ReadStatusReading,
+	ReadStatusRead,
+}
+
+func (e ReadStatus) IsValid() bool {
+	switch e {
+	case ReadStatusToRead, ReadStatusReading, ReadStatusRead:
+		return true
+	}
+	return false
+}
+
+func (e ReadStatus) String() string {
+	return string(e)
+}
+
+func (e *ReadStatus) UnmarshalGQL(v any) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ReadStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ReadStatus", str)
+	}
+	return nil
+}
+
+func (e ReadStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *ReadStatus) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e ReadStatus) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }

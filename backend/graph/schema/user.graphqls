@@ -1,0 +1,58 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  biography: String
+  iconUrl: String 
+  createdAt: String!
+  updatedAt: String!
+  books: [UserBook!]!
+}
+
+input UserCreateInput {
+  name: String!
+  email: String!
+  biography: String
+  iconUrl: String
+}
+
+input UserUpdateInput {
+  name: String
+  email: String
+  biography: String
+  iconUrl: String
+}
+
+
+type UserBook {
+  id: ID!
+  user: User!
+  book: Book!
+  status: ReadStatus!
+  startedAt: String
+  finishedAt: String
+  createdAt: String!
+  updatedAt: String!
+  isLendable: Boolean!
+}
+
+enum ReadStatus {
+  TO_READ
+  READING
+  READ
+}
+
+input UserBookCreateInput {
+  bookId: ID! 
+  status: ReadStatus!
+  startedAt: String
+  finishedAt: String
+  isLendable: Boolean!
+}
+
+input UserBookUpdateInput {
+  status: ReadStatus
+  startedAt: String
+  finishedAt: String
+  isLendable: Boolean
+}

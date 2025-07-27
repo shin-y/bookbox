@@ -1,0 +1,25 @@
+type Mutation {
+  # 書籍作成・更新
+  createBook(input: BookCreateInput!): Book!
+  updateBook(id: ID!, input: BookUpdateInput!): Book!
+  deleteBook(id: ID!): Boolean!
+
+  # ユーザー作成・更新
+  createUser(input: UserCreateInput!): User!
+  updateUser(id: ID!, input: UserUpdateInput!): User!
+  deleteUser(id: ID!): Boolean!
+
+  # ユーザーの本登録・更新・削除
+  createUserBook(input: UserBookCreateInput!): UserBook!
+  updateUserBook(id: ID!, input: UserBookUpdateInput!): UserBook!
+  deleteUserBook(id: ID!): Boolean!
+
+  # レビュー作成・更新・削除
+  createReview(input: ReviewCreateInput!): Review!
+  updateReview(id: ID!, input: ReviewUpdateInput!): Review!
+  deleteReview(id: ID!): Boolean!
+
+  # レビューへのリアクション
+  createReviewReaction(input: ReviewReactionCreateInput!): ReviewReaction!
+  deleteReviewReaction(id: ID!): Boolean!
+}

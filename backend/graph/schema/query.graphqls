@@ -1,0 +1,25 @@
+type Query {
+  # ユーザー一覧を取得
+  users: [User!]!
+
+  # 特定のユーザーをIDで取得
+  user(id: ID!): User
+
+  # 書籍一覧を取得
+  books: [Book!]!
+
+  # 特定の書籍をIDで取得
+  book(id: ID!): Book
+
+  # ログイン中のユーザーが登録した本一覧
+  myBooks: [UserBook!]!
+
+  # 特定ユーザーのレビュー一覧
+  userReviews(userId: ID!): [Review!]!
+
+  # 書籍のレビュー一覧
+  bookReviews(bookId: ID!): [Review!]!
+
+  # 特定レビューをIDで取得
+  review(id: ID!): Review
+}

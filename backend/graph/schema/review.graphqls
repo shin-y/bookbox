@@ -1,0 +1,39 @@
+type Review {
+  id: ID!
+  user: User!
+  book: Book!
+  rating: Int
+  title: String
+  comment: String
+  spoiler: String
+  createdAt: String!
+  updatedAt: String!
+  reactions: [ReviewReaction!]!
+  reactionCount: Int!
+}
+
+input ReviewCreateInput {
+  bookId: ID! 
+  rating: Int
+  title: String
+  comment: String
+  spoiler: String
+}
+
+input ReviewUpdateInput {
+  rating: Int
+  title: String
+  comment: String
+  spoiler: String
+}
+
+
+type ReviewReaction {
+  id: ID!
+  review: Review!
+  user: User!
+}
+
+input ReviewReactionCreateInput {
+  reviewId: ID!
+}
