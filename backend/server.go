@@ -5,24 +5,37 @@ import (
 	"net/http"
 	"os"
 
+	"bookbox/backend/db"
+	"bookbox/backend/graph"
+
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/lru"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/vektah/gqlparser/v2/ast"
-	"github.com/your-username/bookbox/backend/graph"
 )
 
 const defaultPort = "8080"
 
 func main() {
+	// DB接続 & マイグレーション
+	db.Init()
+	if err := db.Migrate(); err != nil {
+		log.Fatalf("Migration failed: %v", err)
+	}
+	log.Printf("Migrated successfully")
+
+	// GraphQL ハンドラー設定
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
-	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	// ResolverにDBを渡す
+	dbConn := db.GetDB()
+	resolver := &graph.Resolver{DB: dbConn}
+	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
 
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})
