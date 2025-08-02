@@ -13,6 +13,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/lru"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/rs/cors"
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
@@ -48,8 +49,16 @@ func main() {
 		Cache: lru.New[string](100),
 	})
 
+	// TODO: 開発中は全て許可（本番は制限）
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3001"}, // ← Next.jsのURL
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowedHeaders:   []string{"*"},
+	})
+
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	http.Handle("/query", c.Handler(srv))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
